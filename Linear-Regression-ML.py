@@ -23,7 +23,7 @@ def sig(z):
 
 def jiters(cost, itWorks, train, data, w):
     costs = []
-    its = int(input("How many iterations would you like to run?"))
+    its = 900#int(input("How many iterations would you like to run?"))
     for i in range(its):
         for j in range((train-1)):
             hyp = sig(np.dot(data, w))
@@ -43,8 +43,6 @@ def bestFit(data, w, itWorks):
     plt.ylabel("Test 1")
     plt.xlabel("Test 2")
     plt.scatter(data.T[1], data.T[3], c = clorz(itWorks))
-    boundx = []
-    boundy = []
     x = np.linspace(-1, 1, 100)
     y = np.linspace(-1, 1, 100)
     X, Y = np.meshgrid(x, y)
@@ -53,11 +51,13 @@ def bestFit(data, w, itWorks):
     F += w[1] * X
     F += w[2] * X**2
     F += w[3] * Y
-    F += w[4] * X*Y
-    F += w[5] * X*Y**2
-    F += w[6] * Y**2
-    F += w[7] * X**2*Y
-    F += w[8] * X**2*Y**2
+    F += w[4] * Y**2
+    F += w[5] * X*Y
+#    F += w[6] * 
+#    F += w[6] * X**2*Y**2
+#    F += w[6] * (X*Y)**2
+#    F += w[7] * X**2*Y
+#    F += w[8] * X*Y**2
     plt.contour(X,Y,F,[0])
     plt.savefig("Decision_Boundary_LR" + ".png", bbox_inches="tight")
     plt.show()
@@ -100,22 +100,26 @@ def confusion(data, w, itWorks):
 def readData(size, fin, itWorks, data):
     for i in range(size):
         line = fin.readline().split("\t")
-        x_one = float(line[0])
-        x_two = float(line[1])
+        X = float(line[0])
+        Y = float(line[1])
         itWorks[i] = int(line[2])
         data[i][0] = 1
-        data[i][1] = x_one
-        data[i][2] = x_one ** 2
-        data[i][3] = x_two
-        data[i][4] = x_one * x_two
-        data[i][5] = x_one * x_two ** 2
-        data[i][6] = x_two ** 2
-        data[i][7] = x_one ** 2 * x_two
-        data[i][8] = x_one ** 2 * x_two ** 2
+        data[i][1] = X
+        data[i][2] = X**2
+        data[i][3] = Y
+        data[i][4] = Y**2
+        data[i][5] = X*Y
+#        data[i][6] = 
+#        data[i][7] = np.sin(Y*X)
+#        data[i][6] = X**2*Y**2
+#        data[i][6] = (X*Y)**2
+#        data[i][7] = X**2*Y
+#        data[i][8] = X*Y**2
 
 def main():
-    trainFile = input("Enter a file for training: ")
-    fin = open(trainFile, "r")
+#    trainFile = input("Enter a file for training: ")
+#    fin = open(trainFile, "r")
+    fin = open("training.txt", "r")#
     numS = fin.readline().split("\t")
     train = int(numS[0])
     features = int(9)
@@ -129,8 +133,9 @@ def main():
     jiters(cost, itWorks, train, data, w)
     bestFit(data, w, itWorks)
     
-    testFile = input("Enter a file for testing: ")
-    fin2 = open(testFile, "r")
+#    testFile = input("Enter a file for testing: ")
+#    fin2 = open(testFile, "r")
+    fin2 = open("testing.txt", "r")#
     num2 = fin2.readline().split("\t")
     test = int(num2[0])    
     works = np.zeros(test, dtype = "int")
