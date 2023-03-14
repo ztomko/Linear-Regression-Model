@@ -60,7 +60,6 @@ def bestFit(data, w, itWorks):
     F += w[4] * Y**2
     F += w[5] * X*Y
 #   Less accuracy
-#   F += w[6] * 
 #   F += w[6] * X**2*Y**2
 #   F += w[6] * (X*Y)**2
 #   F += w[6] * X**2*Y
