@@ -7,8 +7,10 @@ Created on Fri Mar 11 01:24:24 2022
 import matplotlib.pyplot as plt
 import numpy as np
 
+#Weight of iterative refinement changes
 ALPHA = 0.05  
 
+#Assigns chart colors based on product functionality
 def clorz(itWorks):
     colors = []
     for i in itWorks:
@@ -18,12 +20,14 @@ def clorz(itWorks):
             colors.append("red")
     return colors
     
+#Sigmoid function
 def sig(z):
     return 1.0/(1.0 + np.exp(-z))
 
+#Iterative refinement for standard error (J)
 def jiters(cost, itWorks, train, data, w):
     costs = []
-    its = 900#int(input("How many iterations would you like to run?"))
+    int(input("How many iterations would you like to run?"))
     for i in range(its):
         for j in range((train-1)):
             hyp = sig(np.dot(data, w))
@@ -38,6 +42,7 @@ def jiters(cost, itWorks, train, data, w):
     plt.savefig("JvsI_LR" + ".png", bbox_inches="tight")
     plt.show()
     
+#Creates decision boundary based on test data
 def bestFit(data, w, itWorks):
     plt.title("Decision Boundary")
     plt.ylabel("Test 1")
@@ -47,21 +52,24 @@ def bestFit(data, w, itWorks):
     y = np.linspace(-1, 1, 100)
     X, Y = np.meshgrid(x, y)
     F = -0.5
+#   More accuracy
     F += w[0]
     F += w[1] * X
     F += w[2] * X**2
     F += w[3] * Y
     F += w[4] * Y**2
     F += w[5] * X*Y
-#    F += w[6] * 
-#    F += w[6] * X**2*Y**2
-#    F += w[6] * (X*Y)**2
-#    F += w[7] * X**2*Y
-#    F += w[8] * X*Y**2
+#   Less accuracy
+#   F += w[6] * 
+#   F += w[6] * X**2*Y**2
+#   F += w[6] * (X*Y)**2
+#   F += w[6] * X**2*Y
+#   F += w[6] * X*Y**2
     plt.contour(X,Y,F,[0])
     plt.savefig("Decision_Boundary_LR" + ".png", bbox_inches="tight")
     plt.show()
             
+#Gets the values of a confusion matrix using data
 def confusion(data, w, itWorks):
     pre = sig(np.dot(data, w))
     count = 0
@@ -97,29 +105,32 @@ def confusion(data, w, itWorks):
             "\nRecall: " + str(recall) +
             "\nF1: " + str(F1))
 
+#Reads data in from a file
 def readData(size, fin, itWorks, data):
     for i in range(size):
         line = fin.readline().split("\t")
         X = float(line[0])
         Y = float(line[1])
         itWorks[i] = int(line[2])
+#       More accuracy
         data[i][0] = 1
         data[i][1] = X
         data[i][2] = X**2
         data[i][3] = Y
         data[i][4] = Y**2
         data[i][5] = X*Y
-#        data[i][6] = 
-#        data[i][7] = np.sin(Y*X)
-#        data[i][6] = X**2*Y**2
-#        data[i][6] = (X*Y)**2
-#        data[i][7] = X**2*Y
-#        data[i][8] = X*Y**2
+#       Less accuracy
+#       data[i][6] = np.sin(Y*X)
+#       data[i][6] = X**2*Y**2
+#       data[i][6] = (X*Y)**2
+#       data[i][6] = X**2*Y
+#       data[i][6] = X*Y**2
 
+#Main function: reads training file, performs logistic regression,
+#   and tests the result against the testing file
 def main():
-#    trainFile = input("Enter a file for training: ")
-#    fin = open(trainFile, "r")
-    fin = open("training.txt", "r")#
+    trainFile = input("Enter a file for training: ")
+    fin = open(trainFile, "r")
     numS = fin.readline().split("\t")
     train = int(numS[0])
     features = int(9)
@@ -133,9 +144,8 @@ def main():
     jiters(cost, itWorks, train, data, w)
     bestFit(data, w, itWorks)
     
-#    testFile = input("Enter a file for testing: ")
-#    fin2 = open(testFile, "r")
-    fin2 = open("testing.txt", "r")#
+    testFile = input("Enter a file for testing: ")
+    fin2 = open(testFile, "r")
     num2 = fin2.readline().split("\t")
     test = int(num2[0])    
     works = np.zeros(test, dtype = "int")
